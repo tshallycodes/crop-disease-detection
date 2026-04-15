@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crop Disease Detector</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Crop Disease Detector</h1>
+    <p class="subtitle">Upload a photo of a plant leaf and AI will identify any disease instantly.</p>
+  </header>
+
+  {% if error %}
+    <div class="banner error">{{ error }}</div>
+  {% endif %}
+
+  <!-- Upload -->
+  <div class="upload-box">
+    <form action="/predict" method="POST" enctype="multipart/form-data" id="uploadForm">
+      <div class="upload-icon">🌿</div>
+      <p class="upload-label">Upload a photo of a plant leaf</p>
+      <input type="file" name="image" accept="image/*" required class="file-input" id="fileInput"/>
+      <label for="fileInput" class="file-btn">Browse Image</label>
+      <p class="file-name" id="fileName">No file chosen</p>
+      <button type="submit" class="btn" id="submitBtn">Analyse Leaf</button>
+    </form>
+  </div>
+
+  <!-- Results -->
+  {% if results %}
+  <div class="results-section">
+
+    <!-- Image preview -->
+    <div class="image-preview-box">
+      <img src="{{ image_url }}" alt="Uploaded leaf" class="preview-img"/>
+    </div>
+
+    <!-- Top result banner -->
+    <div class="banner {{ 'success' if disease_info.status == 'healthy' else 'warning' }}">
+      <p class="result-label">
+        {{ '✅ Healthy Plant' if disease_info.status == 'healthy' else '⚠️ Disease Detected' }}
+      </p>
+      <div class="price-tag">{{ top.plant }} — {{ top.condition }}</div>
+      <p class="result-sub">Confidence: <strong>{{ top.confidence }}%</strong></p>
+    </div>
+
+    <!-- Advice -->
+    <div class="advice-box {{ disease_info.status }}">
+      <div class="advice-title">{{ '🌱 Care Advice' if disease_info.status == 'healthy' else '💊 Treatment Advice' }}</div>
+      <p class="advice-text">{{ disease_info.advice }}</p>
+    </div>
+
+    <!-- Top 3 predictions -->
+    <div class="section-title">Top 3 Predictions</div>
+    <div class="predictions-list">
+      {% for i, item in [(0, results[0]), (1, results[1]), (2, results[2])] %}
+      <div class="pred-row {% if i == 0 %}top-pred{% endif %}">
+        <span class="pred-rank">#{{ i + 1 }}</span>
+        <div class="pred-bar-wrap">
+          <div class="pred-label-row">
+            <span class="pred-label">{{ item.plant }} — {{ item.condition }}</span>
+            <span class="pred-pct">{{ item.confidence }}%</span>
+          </div>
+          <div class="pred-bar-bg">
+            <div class="pred-bar-fill" style="width: {{ item.confidence }}%"></div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <a href="/" class="back-link">← Analyse another leaf</a>
+  </div>
+  {% endif %}
+
+  <!-- Info box -->
+  {% if not results %}
+  <div class="info-box">
+    <h3>What this app does:</h3>
+    <ul>
+      <li>Upload a photo of a <strong>plant leaf</strong></li>
+      <li>AI identifies the <strong>disease</strong> (or confirms it's healthy)</li>
+      <li>Get instant <strong>treatment advice</strong></li>
+      <li>Supports <strong>Tomato, Potato and Pepper</strong> plants</li>
+    </ul>
+    <h3>Supported diseases:</h3>
+    <ul>
+      <li>Tomato — Early Blight, Late Blight, Leaf Mold, Bacterial Spot, and more</li>
+      <li>Potato — Early Blight, Late Blight</li>
+      <li>Pepper — Bacterial Spot</li>
+    </ul>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+  document.getElementById('fileInput').addEventListener('change', function() {
+    document.getElementById('fileName').textContent = this.files[0]?.name || 'No file chosen';
+  });
+  document.getElementById('uploadForm').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Analysing...';
+    btn.disabled = true;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+uploads/
+crop_disease_model.keras
