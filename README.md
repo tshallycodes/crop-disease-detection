@@ -110,15 +110,3 @@ crop-disease-detector/
 - **Early stopping:** Patience of 4 epochs
 - **Dataset split:** 80% train / 20% validation
 
-## My Other ML Projects
-
-| Project | Description | Repo |
-|---------|-------------|------|
-| Wildfire Detection | YOLOv8 on Sentinel-2 satellite imagery | [wildfire-detection](https://github.com/manny2341/wildfire-detection-and-monitoring-) |
-| Emotion Detection | Real-time CNN webcam emotion recognition | [Emotion-Detection](https://github.com/manny2341/Emotion-Detection) |
-| Image Classifier | EfficientNetV2 — 1,000 categories | [image-classifier](https://github.com/manny2341/image-classifier) |
-| Breast Cancer Analysis | 96.49% accuracy healthcare AI | [breast-cancer-analysis](https://github.com/manny2341/breast-cancer-analysis) |
-
-## Author
-
-[@tshallycodes](https://github.com/tshallycodes)
