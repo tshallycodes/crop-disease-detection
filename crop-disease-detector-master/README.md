@@ -121,4 +121,4 @@ crop-disease-detector/
 
 ## Author
 
-[@manny2341](https://github.com/manny2341)
+[@tshallycodes](https://github.com/tshallycodes)
